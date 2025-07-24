@@ -17,6 +17,7 @@
 /.next/
 /out/
 /.idea
+/.qodo
 # production
 /build
 
