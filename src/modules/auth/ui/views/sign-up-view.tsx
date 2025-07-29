@@ -2,10 +2,11 @@
 
 import { set, z } from 'zod';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { OctagonAlertIcon } from 'lucide-react';
+import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@/components/ui/input';
@@ -28,13 +29,14 @@ const formSchema = z.object({
     password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
     confirmPassword: z.string().min(6, { message: "Password must be at least 6 characters long" }),
 })
-.refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-});
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords don't match",
+        path: ['confirmPassword'],
+    });
 
 export const SignUpView = () => {
     const router = useRouter();
+
     const [pending, setPending] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -57,6 +59,7 @@ export const SignUpView = () => {
                 name: data.name,
                 email: data.email,
                 password: data.password,
+                callbackURL: "/"
             },
             {
                 onSuccess: () => {
@@ -68,7 +71,26 @@ export const SignUpView = () => {
                 },
             }
         );
+    };
 
+    const onSocial = (provider: "github" | "google") => {
+        setError(null);
+        setPending(true);
+
+        authClient.signIn.social(
+            {
+                provider: provider,
+                callbackURL: "/"
+            },
+            {
+                onSuccess: () => {
+                    setPending(false);
+                },
+                onError: ({ error }) => {
+                    setError(error.message);
+                },
+            }
+        );
     };
 
     return (
@@ -173,7 +195,7 @@ export const SignUpView = () => {
                                 <Button
                                     disabled={pending}
                                     type='submit'
-                                    className="w-full"
+                                    className="w-full bg-green-600 hover:bg-green-800"
                                 >
                                     Sign up
                                 </Button>
@@ -187,20 +209,22 @@ export const SignUpView = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <Button
                                         disabled={pending}
+                                        onClick={() => onSocial("google")}
                                         variant="outline"
                                         type="button"
                                         className="w-full"
                                     >
-                                        Google
+                                        <FaGoogle className="text-green-600" />
                                     </Button>
 
                                     <Button
                                         disabled={pending}
+                                        onClick={() => onSocial("github")}
                                         variant="outline"
                                         type="button"
                                         className="w-full"
                                     >
-                                        Github
+                                        <FaGithub className="text-green-600" />
                                     </Button>
                                 </div>
 
