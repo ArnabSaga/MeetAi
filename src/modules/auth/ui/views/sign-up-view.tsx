@@ -195,7 +195,7 @@ export const SignUpView = () => {
                                 <Button
                                     disabled={pending}
                                     type='submit'
-                                    className="w-full bg-green-600 hover:bg-green-800"
+                                className="w-full"
                                 >
                                     Sign up
                                 </Button>
@@ -214,7 +214,7 @@ export const SignUpView = () => {
                                         type="button"
                                         className="w-full"
                                     >
-                                        <FaGoogle className="text-green-600" />
+                                        <FaGoogle />
                                     </Button>
 
                                     <Button
@@ -224,7 +224,7 @@ export const SignUpView = () => {
                                         type="button"
                                         className="w-full"
                                     >
-                                        <FaGithub className="text-green-600" />
+                                        <FaGithub />
                                     </Button>
                                 </div>
 
@@ -236,7 +236,7 @@ export const SignUpView = () => {
                         </form>
                     </Form>
 
-                    <div className="bg-radial from-green-700 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+                    <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center">
                         <img
                             src="/logo.svg"
                             alt="Meet.AI Logo"
