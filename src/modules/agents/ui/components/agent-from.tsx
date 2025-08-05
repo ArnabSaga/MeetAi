@@ -40,21 +40,21 @@ export const AgentFrom = ({
 
     const createAgent = useMutation(
         trpc.agents.create.mutationOptions({
-            onSuccess: async () => { 
+            onSuccess: async () => {
                 await queryClient.invalidateQueries(
-                    trpc.agents.getMany.queryOptions(),
+                    trpc.agents.getMany.queryOptions({}),
                 );
 
                 if (initialValues?.id) {
                     await queryClient.invalidateQueries(
-                        trpc.agents.getOne.queryOptions({id: initialValues.id}),
+                        trpc.agents.getOne.queryOptions({ id: initialValues.id }),
                     );
                 }
 
                 onSuccess?.();
             },
 
-            onError: (error) => { 
+            onError: (error) => {
                 toast.error(error.message);
 
                 // TODO: Check if error code is "FORBIDDEN", redirect to "/upgrade"
