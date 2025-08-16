@@ -40,21 +40,41 @@ export const AgentFrom = ({
 
     const createAgent = useMutation(
         trpc.agents.create.mutationOptions({
-            onSuccess: async () => { 
+            onSuccess: async () => {
+                await queryClient.invalidateQueries(
+                    trpc.agents.getMany.queryOptions({}),
+                );
+
+                // TODO: Invalidate free tier usage
+
+                onSuccess?.();
+            },
+
+            onError: (error) => {
+                toast.error(error.message);
+
+                // TODO: Check if error code is "FORBIDDEN", redirect to "/upgrade"
+            },
+        }),
+    );
+
+    const updateAgent = useMutation(
+        trpc.agents.update.mutationOptions({
+            onSuccess: async () => {
                 await queryClient.invalidateQueries(
                     trpc.agents.getMany.queryOptions({}),
                 );
 
                 if (initialValues?.id) {
                     await queryClient.invalidateQueries(
-                        trpc.agents.getOne.queryOptions({id: initialValues.id}),
+                        trpc.agents.getOne.queryOptions({ id: initialValues.id }),
                     );
                 }
 
                 onSuccess?.();
             },
 
-            onError: (error) => { 
+            onError: (error) => {
                 toast.error(error.message);
 
                 // TODO: Check if error code is "FORBIDDEN", redirect to "/upgrade"
@@ -72,11 +92,11 @@ export const AgentFrom = ({
 
     const isEdit = !!initialValues?.id;
 
-    const isPending = createAgent.isPending;
+    const isPending = createAgent.isPending || updateAgent.isPending;
 
     const onSubmit = (values: z.infer<typeof agentsInsertSchema>) => {
         if (isEdit) {
-            console.log("TODO: updateAgent");
+            updateAgent.mutate({ ...values, id: initialValues.id });
         } else {
             createAgent.mutate(values);
         }
