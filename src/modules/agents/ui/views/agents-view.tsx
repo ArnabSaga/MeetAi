@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
@@ -15,6 +17,8 @@ import { DataPagination } from "../components/data-pagination";
 
 
 export const AgentsView = () => {
+    const router = useRouter();
+
     const [filters, setFilters] = useAgentFilters();
 
     const trpc = useTRPC();
@@ -28,6 +32,7 @@ export const AgentsView = () => {
             <DataTable
                 data={data.items}
                 columns={columns}
+                onRowClick={(row) => router.push(`/agents/${row.id}`)}
             />
 
             <DataPagination
@@ -37,7 +42,7 @@ export const AgentsView = () => {
             />
 
             {data.items.length === 0 && (
-                <EmptyState 
+                <EmptyState
                     title="Create your first agent"
                     description="Create an agent to join your meeting. Each agent will follow your instructions and can interact with participants during the call."
                 />
