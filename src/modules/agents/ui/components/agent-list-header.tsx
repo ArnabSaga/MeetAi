@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button";
 
 import { NewAgentDialog } from "./new-agent-dialog";
 import { AgentSearchFilter } from "./agent-search-filter";
-import { useAgentFilters } from "../../hooks/use-agents-filters";
+import { useAgentsFilters } from "../../hooks/use-agents-filters";
 
 export const AgentListHeader = () => {
-    const [filters, setFilters] = useAgentFilters();
+    const [filters, setFilters] = useAgentsFilters();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
