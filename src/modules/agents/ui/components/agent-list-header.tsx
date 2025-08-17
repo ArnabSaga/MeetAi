@@ -8,7 +8,7 @@ import { DEFAULT_PAGE } from "@/constants";
 import { Button } from "@/components/ui/button";
 
 import { NewAgentDialog } from "./new-agent-dialog";
-import { AgentSearchFilter } from "./agent-search-filter";
+import { AgentsSearchFilter } from "./agent-search-filter";
 import { useAgentsFilters } from "../../hooks/use-agents-filters";
 
 export const AgentListHeader = () => {
@@ -40,7 +40,7 @@ export const AgentListHeader = () => {
                 </div>
 
                 <div className="flex items-center gap-x-2 p-1">
-                    <AgentSearchFilter />
+                    <AgentsSearchFilter />
 
                     {isAnyFliterModified && (
                         <Button variant="outline" size="sm" onClick={onClearFliters}>
