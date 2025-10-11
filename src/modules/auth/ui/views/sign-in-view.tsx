@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { OctagonAlertIcon } from 'lucide-react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -189,7 +189,7 @@ export const SignInView = () => {
                     </Form>
 
                     <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center">
-                        <Image
+                        <img
                             src="/logo.svg"
                             alt="Meet.AI Logo"
                             className="h-[92px] w-[92px]"
