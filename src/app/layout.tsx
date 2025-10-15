@@ -29,9 +29,6 @@ export default function RootLayout({
     <NuqsAdapter>
       <TRPCReactProvider>
         <html lang="en">
-          <head>
-            <link rel="icon" href="/logo.svg" />
-          </head>
           <body
             className={`${inter.className} antialiased`}
           >
