@@ -1,8 +1,8 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 
 import {
   Call,
@@ -12,8 +12,8 @@ import {
   StreamVideoClient,
 } from "@stream-io/video-react-sdk";
 
-import { CallUI } from "./call-ui";
 import { useTRPC } from "@/trpc/client";
+import { CallUI } from "./call-ui";
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 
@@ -25,17 +25,9 @@ interface Props {
   userImage: string;
 }
 
-export const CallConnect = ({
-  meetingId,
-  meetingName,
-  userId,
-  userName,
-  userImage,
-}: Props) => {
+export const CallConnect = ({ meetingId, meetingName, userId, userName, userImage }: Props) => {
   const trpc = useTRPC();
-  const { mutateAsync: generateToken } = useMutation(
-    trpc.meetings.generateToken.mutationOptions()
-  );
+  const { mutateAsync: generateToken } = useMutation(trpc.meetings.generateToken.mutationOptions());
 
   const [client, setClient] = useState<StreamVideoClient>();
 
@@ -64,9 +56,17 @@ export const CallConnect = ({
     if (!client) return;
 
     const _call = client.call("default", meetingId);
+
     _call.camera.disable();
     _call.microphone.disable();
-    setCall(_call);
+
+    const init = async () => {
+      await _call.camera.disable();
+      await _call.microphone.disable();
+      setCall(_call);
+    };
+
+    init();
 
     return () => {
       if (_call.state.callingState !== CallingState.LEFT) {
